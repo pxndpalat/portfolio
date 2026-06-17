@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    experiences: Experience;
+    projects: Project;
+    skills: Skill;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,18 +81,25 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    experiences: ExperiencesSelect<false> | ExperiencesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    skills: SkillsSelect<false> | SkillsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
-  fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
-  locale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'th') | ('en' | 'th')[];
+  globals: {
+    portfolio: Portfolio;
+  };
+  globalsSelect: {
+    portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
+  };
+  locale: 'en' | 'th';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -122,7 +132,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,7 +157,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +173,103 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences".
+ */
+export interface Experience {
+  id: number;
+  roleTitle: string;
+  company: string;
+  startDate: string;
+  endDate?: string | null;
+  isCurrent?: boolean | null;
+  employmentType?: ('full-time' | 'part-time' | 'contract' | 'freelance' | 'internship' | 'education') | null;
+  location?: string | null;
+  summary?: string | null;
+  highlights?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  order: number;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  /**
+   * Stable URL identifier for a future /projects/[slug] page.
+   */
+  slug: string;
+  category: 'backend' | 'frontend' | 'tooling' | 'full-stack' | 'product';
+  excerpt: string;
+  /**
+   * Long-form case study content for future project detail pages.
+   */
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  tags?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  repoUrl?: string | null;
+  liveUrl?: string | null;
+  images?: (number | Media)[] | null;
+  evidence?: string | null;
+  featured?: boolean | null;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill {
+  id: number;
+  title: string;
+  summary?: string | null;
+  items?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  featured?: boolean | null;
+  order: number;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +286,32 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'experiences';
+        value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'skills';
+        value: number | Skill;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +321,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +344,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -277,6 +392,76 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experiences_select".
+ */
+export interface ExperiencesSelect<T extends boolean = true> {
+  roleTitle?: T;
+  company?: T;
+  startDate?: T;
+  endDate?: T;
+  isCurrent?: T;
+  employmentType?: T;
+  location?: T;
+  summary?: T;
+  highlights?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  order?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  excerpt?: T;
+  content?: T;
+  tags?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  repoUrl?: T;
+  liveUrl?: T;
+  images?: T;
+  evidence?: T;
+  featured?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills_select".
+ */
+export interface SkillsSelect<T extends boolean = true> {
+  title?: T;
+  summary?: T;
+  items?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  featured?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -314,6 +499,212 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio".
+ */
+export interface Portfolio {
+  id: number;
+  siteName: string;
+  brandLabel: string;
+  navigation: {
+    about: string;
+    experience: string;
+    projects: string;
+    skills: string;
+    contact: string;
+    cta: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    lead: string;
+    primaryActionLabel: string;
+    secondaryActionLabel: string;
+  };
+  profileTerminal: {
+    name: string;
+    focus: string;
+    strength: string;
+    proof: string;
+    note?: string | null;
+  };
+  profileImage?: (number | null) | Media;
+  metrics?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  about: {
+    eyebrow: string;
+    title: string;
+    note?: string | null;
+    paragraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    callout?: {
+      label?: string | null;
+      text?: string | null;
+    };
+  };
+  sectionLabels: {
+    experience: {
+      eyebrow: string;
+      title: string;
+      note?: string | null;
+    };
+    projects: {
+      eyebrow: string;
+      title: string;
+      note?: string | null;
+    };
+    skills: {
+      eyebrow: string;
+      title: string;
+      note?: string | null;
+    };
+    contact: {
+      eyebrow: string;
+      title: string;
+      note?: string | null;
+    };
+  };
+  contact: {
+    intro: string;
+    links?:
+      | {
+          label: string;
+          value: string;
+          href: string;
+          copyValue?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  footerText: string;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "portfolio_select".
+ */
+export interface PortfolioSelect<T extends boolean = true> {
+  siteName?: T;
+  brandLabel?: T;
+  navigation?:
+    | T
+    | {
+        about?: T;
+        experience?: T;
+        projects?: T;
+        skills?: T;
+        contact?: T;
+        cta?: T;
+      };
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        lead?: T;
+        primaryActionLabel?: T;
+        secondaryActionLabel?: T;
+      };
+  profileTerminal?:
+    | T
+    | {
+        name?: T;
+        focus?: T;
+        strength?: T;
+        proof?: T;
+        note?: T;
+      };
+  profileImage?: T;
+  metrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  about?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+        note?: T;
+        paragraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        callout?:
+          | T
+          | {
+              label?: T;
+              text?: T;
+            };
+      };
+  sectionLabels?:
+    | T
+    | {
+        experience?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              note?: T;
+            };
+        projects?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              note?: T;
+            };
+        skills?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              note?: T;
+            };
+        contact?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              note?: T;
+            };
+      };
+  contact?:
+    | T
+    | {
+        intro?: T;
+        links?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              href?: T;
+              copyValue?: T;
+              id?: T;
+            };
+      };
+  footerText?: T;
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
