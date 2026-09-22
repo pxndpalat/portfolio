@@ -11,8 +11,9 @@ interface Props {
 
 const { locale, title, description } = Astro.props;
 const otherLocale: Locale = locale === 'en' ? 'th' : 'en';
-const canonicalUrl = new URL(`/${locale}/`, Astro.site);
-const alternateUrl = new URL(`/${otherLocale}/`, Astro.site);
+const baseUrl = `${import.meta.env.BASE_URL}/`;
+const canonicalUrl = new URL(`${baseUrl}${locale}/`, Astro.site);
+const alternateUrl = new URL(`${baseUrl}${otherLocale}/`, Astro.site);
 ---
 
 <!doctype html>
@@ -24,7 +25,7 @@ const alternateUrl = new URL(`/${otherLocale}/`, Astro.site);
     <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" hreflang={locale} href={canonicalUrl} />
     <link rel="alternate" hreflang={otherLocale} href={alternateUrl} />
-    <link rel="alternate" hreflang="x-default" href={new URL('/en/', Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(`${baseUrl}en/`, Astro.site)} />
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
