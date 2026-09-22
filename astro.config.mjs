@@ -3,7 +3,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://your-domain.example',
+  site: 'https://pxndpalat.github.io/',
+  base: 'portfolio',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
