@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import { siteConfig, type Locale } from '../data/site';
+import Header from '../components/Header.astro';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+}
+
+const { locale, title, description } = Astro.props;
+const otherLocale: Locale = locale === 'en' ? 'th' : 'en';
+const canonicalUrl = new URL(`/${locale}/`, Astro.site);
+const alternateUrl = new URL(`/${otherLocale}/`, Astro.site);
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="data:," />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang={locale} href={canonicalUrl} />
+    <link rel="alternate" hreflang={otherLocale} href={alternateUrl} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/en/', Astro.site)} />
+    <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL('/og-placeholder.svg', Astro.site)} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header locale={locale} name={siteConfig.name} />
+    <main>
+      <slot />
+    </main>
+    <footer class="mx-auto mt-16 max-w-5xl border-t px-6 py-8 text-sm text-slate-600">
+      <p>© {new Date().getFullYear()} {siteConfig.name}</p>
+    </footer>
+  </body>
+</html>

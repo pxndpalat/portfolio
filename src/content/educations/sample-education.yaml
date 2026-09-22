@@ -1,0 +1,10 @@
+order: 1
+degree:
+  en: 'PLACEHOLDER Degree'
+  th: 'PLACEHOLDER วุฒิการศึกษา'
+institution: 'PLACEHOLDER Institution'
+start: '2020'
+end: '2024'
+summary:
+  en: 'PLACEHOLDER: Add a short description of your study.'
+  th: 'PLACEHOLDER: เพิ่มคำอธิบายสั้น ๆ เกี่ยวกับการศึกษา'

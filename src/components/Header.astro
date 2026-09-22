@@ -1,0 +1,32 @@
+---
+import { sectionLabels, type Locale } from '../data/site';
+
+interface Props {
+  locale: Locale;
+  name: string;
+}
+
+const { locale, name } = Astro.props;
+const labels = sectionLabels[locale];
+const otherLocale: Locale = locale === 'en' ? 'th' : 'en';
+---
+
+<header class="border-b">
+  <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-5">
+    <a class="font-semibold text-slate-900" href={`/${locale}/`}>{name}</a>
+    <nav aria-label="Primary navigation">
+      <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+        <li><a href={`/${locale}/#about`}>{labels.about}</a></li>
+        <li><a href={`/${locale}/#projects`}>{labels.projects}</a></li>
+        <li><a href={`/${locale}/#experiences`}>{labels.experiences}</a></li>
+        <li><a href={`/${locale}/#educations`}>{labels.educations}</a></li>
+        <li><a href={`/${locale}/#certificates`}>{labels.certificates}</a></li>
+        <li><a href={`/${locale}/#skills`}>{labels.skills}</a></li>
+        <li><a href={`/${locale}/#languages`}>{labels.languages}</a></li>
+      </ul>
+    </nav>
+    <a class="rounded border px-3 py-1 text-sm" href={`/${otherLocale}/`} lang={otherLocale}>
+      {otherLocale.toUpperCase()}
+    </a>
+  </div>
+</header>

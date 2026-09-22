@@ -1,0 +1,166 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import { sectionLabels, siteConfig, type Locale } from '../../data/site';
+
+export function getStaticPaths() {
+  return [{ params: { lang: 'en' } }, { params: { lang: 'th' } }];
+}
+
+const locale = Astro.params.lang as Locale;
+const labels = sectionLabels[locale];
+const [projects, experiences, educations, certificates] = await Promise.all([
+  getCollection('projects'),
+  getCollection('experiences'),
+  getCollection('educations'),
+  getCollection('certificates'),
+]);
+
+const sortByOrder = <T extends { data: { order: number } }>(items: T[]) =>
+  items.toSorted((a, b) => a.data.order - b.data.order);
+
+const localized = (value: { en: string; th: string }) => value[locale];
+const title = `${siteConfig.name} — ${localized(siteConfig.role)}`;
+const description = localized(siteConfig.bio);
+---
+
+<BaseLayout {locale} {title} {description}>
+  <Section id="about" title={labels.about}>
+    <div class="grid gap-6 md:grid-cols-[2fr_1fr]">
+      <div>
+        <p class="mb-2 text-lg font-medium">{localized(siteConfig.role)}</p>
+        <p class="max-w-2xl leading-7 text-slate-700">{localized(siteConfig.bio)}</p>
+      </div>
+      <div>
+        <h3 class="font-medium">{labels.social}</h3>
+        <ul class="mt-2 space-y-2">
+          <li><a class="underline" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
+          {
+            siteConfig.social.map((link) => (
+              <li>
+                <a class="underline" href={link.url} rel="me">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="projects" title={labels.projects}>
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        sortByOrder(projects).map((project) => (
+          <article class="rounded border p-5">
+            <h3 class="text-lg font-medium">{localized(project.data.title)}</h3>
+            <p class="mt-2 leading-7 text-slate-700">{localized(project.data.description)}</p>
+            <ul class="mt-3 flex flex-wrap gap-2" aria-label={labels.technologies}>
+              {project.data.technologies.map((technology) => (
+                <li class="text-sm text-slate-600">{technology}</li>
+              ))}
+            </ul>
+            <div class="mt-4 flex gap-4 text-sm">
+              {project.data.url && (
+                <a class="underline" href={project.data.url}>
+                  {labels.liveProject}
+                </a>
+              )}
+              {project.data.repository && (
+                <a class="underline" href={project.data.repository}>
+                  {labels.repository}
+                </a>
+              )}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="experiences" title={labels.experiences}>
+    <div class="space-y-6">
+      {
+        sortByOrder(experiences).map((experience) => (
+          <article>
+            <h3 class="text-lg font-medium">
+              {localized(experience.data.role)} · {experience.data.company}
+            </h3>
+            <p class="text-sm text-slate-600">
+              {experience.data.start} — {experience.data.end}
+            </p>
+            <p class="mt-2 leading-7 text-slate-700">{localized(experience.data.summary)}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="educations" title={labels.educations}>
+    <div class="space-y-6">
+      {
+        sortByOrder(educations).map((education) => (
+          <article>
+            <h3 class="text-lg font-medium">{localized(education.data.degree)}</h3>
+            <p>{education.data.institution}</p>
+            <p class="text-sm text-slate-600">
+              {education.data.start} — {education.data.end}
+            </p>
+            <p class="mt-2 leading-7 text-slate-700">{localized(education.data.summary)}</p>
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="certificates" title={labels.certificates}>
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        sortByOrder(certificates).map((certificate) => (
+          <article class="rounded border p-5">
+            <h3 class="text-lg font-medium">{localized(certificate.data.name)}</h3>
+            <p>{certificate.data.issuer}</p>
+            <p class="text-sm text-slate-600">{certificate.data.date}</p>
+            {certificate.data.url && (
+              <a class="mt-3 inline-block underline" href={certificate.data.url}>
+                {labels.viewCertificate}
+              </a>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="skills" title={labels.skills}>
+    <ul class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+      {
+        siteConfig.skills.map((skill) => (
+          <li class="rounded border p-4">
+            <>
+              <span class="font-medium">{skill.name}</span>
+              <span class="mt-1 block text-sm text-slate-600">{localized(skill.category)}</span>
+            </>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <Section id="languages" title={labels.languages}>
+    <ul class="grid gap-3 sm:grid-cols-2">
+      {
+        siteConfig.languages.map((language) => (
+          <li class="rounded border p-4">
+            <>
+              <span class="font-medium">{localized(language.name)}</span>
+              <span class="mt-1 block text-sm text-slate-600">{localized(language.level)}</span>
+            </>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
