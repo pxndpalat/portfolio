@@ -11,21 +11,21 @@ const labels = sectionLabels[locale];
 const otherLocale: Locale = locale === 'en' ? 'th' : 'en';
 ---
 
-<header class="border-b">
-  <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4 px-6 py-5">
-    <a class="font-semibold text-slate-900" href={`/${locale}/`}>{name}</a>
-    <nav aria-label="Primary navigation">
-      <ul class="flex flex-wrap gap-x-4 gap-y-2 text-sm">
-        <li><a href={`/${locale}/#about`}>{labels.about}</a></li>
-        <li><a href={`/${locale}/#projects`}>{labels.projects}</a></li>
-        <li><a href={`/${locale}/#experiences`}>{labels.experiences}</a></li>
-        <li><a href={`/${locale}/#educations`}>{labels.educations}</a></li>
-        <li><a href={`/${locale}/#certificates`}>{labels.certificates}</a></li>
-        <li><a href={`/${locale}/#skills`}>{labels.skills}</a></li>
-        <li><a href={`/${locale}/#languages`}>{labels.languages}</a></li>
+<header class="sticky top-0 z-10 border-b border-[oklch(0.87_0.012_255_/_0.82)] bg-[oklch(0.975_0.004_250_/_0.93)] backdrop-blur-xl">
+  <div class="mx-auto flex min-h-16 max-w-[1180px] flex-wrap items-center justify-between gap-3 px-5 sm:px-7">
+    <a class="flex items-center gap-3 whitespace-nowrap font-mono text-[13px] font-medium tracking-[.02em] no-underline" href={`/${locale}/`}>
+      <b class="grid size-[26px] place-items-center rounded-[7px] border border-current text-[11px]">{name.slice(0, 2).toUpperCase()}</b>
+      <span>{name}</span>
+    </a>
+    <nav class="order-3 w-full overflow-x-auto pb-2 sm:order-none sm:w-auto sm:pb-0" aria-label="Primary navigation">
+      <ul class="flex w-max items-center gap-1 text-[11px] font-medium tracking-[.02em] text-[oklch(0.51_0.018_255)] sm:w-auto">
+        <li><a class="block px-2 py-2 hover:text-[oklch(0.205_0.012_255)]" href={`/${locale}/#about`}>{labels.about}</a></li>
+        <li><a class="block px-2 py-2 hover:text-[oklch(0.205_0.012_255)]" href={`/${locale}/#projects`}>{labels.projects}</a></li>
+        <li><a class="block px-2 py-2 hover:text-[oklch(0.205_0.012_255)]" href={`/${locale}/#experiences`}>{labels.experiences}</a></li>
+        <li><a class="block px-2 py-2 hover:text-[oklch(0.205_0.012_255)]" href={`/${locale}/#skills`}>{labels.skills}</a></li>
       </ul>
     </nav>
-    <a class="rounded border px-3 py-1 text-sm" href={`/${otherLocale}/`} lang={otherLocale}>
+    <a class="rounded-lg border border-[oklch(0.87_0.012_255)] px-3 py-1.5 font-mono text-[11px] font-medium" href={`/${otherLocale}/`} lang={otherLocale}>
       {otherLocale.toUpperCase()}
     </a>
   </div>

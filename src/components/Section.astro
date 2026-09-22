@@ -2,14 +2,18 @@
 interface Props {
   id: string;
   title: string;
+  index: string;
 }
 
-const { id, title } = Astro.props;
+const { id, title, index } = Astro.props;
 ---
 
-<section id={id} class="scroll-mt-8 border-b py-12" aria-labelledby={`${id}-heading`}>
-  <div class="mx-auto max-w-5xl px-6">
-    <h2 id={`${id}-heading`} class="mb-6 text-2xl font-semibold text-slate-900">{title}</h2>
+<section id={id} class="scroll-mt-24 border-t border-[oklch(0.87_0.012_255)] py-18 sm:py-26" aria-labelledby={`${id}-heading`}>
+  <div class="mx-auto max-w-[1180px] px-5 sm:px-7">
+    <div class="mb-10 grid gap-3 sm:mb-12 sm:grid-cols-[180px_minmax(0,1fr)] sm:gap-10" data-reveal>
+      <p class="font-mono text-[11px] font-medium tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase">{index} / {title}</p>
+      <h2 id={`${id}-heading`} class="max-w-[18ch] text-3xl leading-[1.08] font-semibold tracking-[-.02em] sm:text-5xl">{title}</h2>
+    </div>
     <slot />
   </div>
 </section>

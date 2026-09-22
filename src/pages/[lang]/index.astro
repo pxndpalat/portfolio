@@ -26,43 +26,40 @@ const description = localized(siteConfig.bio);
 ---
 
 <BaseLayout {locale} {title} {description}>
-  <Section id="about" title={labels.about}>
-    <div class="grid gap-6 md:grid-cols-[2fr_1fr]">
-      <div>
-        <p class="mb-2 text-lg font-medium">{localized(siteConfig.role)}</p>
-        <p class="max-w-2xl leading-7 text-slate-700">{localized(siteConfig.bio)}</p>
+  <section class="overflow-hidden px-5 py-22 sm:px-7 sm:py-36">
+    <div class="mx-auto grid max-w-[1180px] items-end gap-12 lg:grid-cols-[1.25fr_.75fr] lg:gap-28">
+      <div data-reveal>
+        <p class="mb-5 font-mono text-xs font-medium tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase"><span class="mr-2 inline-block size-2 rounded-full bg-[oklch(0.48_0.11_150)]"></span>{localized(siteConfig.role)}</p>
+        <h1 class="max-w-[12ch] text-5xl leading-[.98] font-semibold tracking-[-.03em] sm:text-7xl lg:text-8xl">{siteConfig.name}.</h1>
+        <p class="mt-6 max-w-[56ch] text-base text-[oklch(0.51_0.018_255)] sm:text-lg">{localized(siteConfig.bio)}</p>
+        <div class="mt-9 flex flex-wrap gap-3"><a class="rounded-lg border border-[oklch(0.55_0.17_250)] bg-[oklch(0.55_0.17_250)] px-4 py-3 text-sm font-medium text-white no-underline" href="#projects">{labels.projects}</a><a class="rounded-lg border border-current px-4 py-3 text-sm font-medium no-underline" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></div>
+        <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[oklch(0.51_0.018_255)]">{siteConfig.social.map((link) => <a href={link.url} rel="me">{link.label} ↗</a>)}</div>
       </div>
-      <div>
-        <h3 class="font-medium">{labels.social}</h3>
-        <ul class="mt-2 space-y-2">
-          <li><a class="underline" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></li>
-          {
-            siteConfig.social.map((link) => (
-              <li>
-                <a class="underline" href={link.url} rel="me">
-                  {link.label}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      <aside class="rounded-[20px] border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5 font-mono text-xs leading-7 shadow-[0_18px_40px_oklch(0.2_0.02_255_/_0.07)]" data-reveal><p class="mb-5 text-[10px] tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase">● ● ● profile.json</p><p class="text-[oklch(0.51_0.018_255)]">{'{'}</p><p class="pl-4">"role": "{localized(siteConfig.role)}",</p><p class="pl-4">"focus": "portfolio",</p><p class="pl-4">"availability": "open"</p><p class="text-[oklch(0.51_0.018_255)]">{'}'}</p></aside>
+    </div>
+  </section>
+
+  <Section id="about" title={labels.about} index="01">
+    <div class="grid gap-10 lg:grid-cols-[1.4fr_.6fr]" data-reveal>
+      <div><p class="max-w-[53ch] text-lg leading-relaxed sm:text-xl">{localized(siteConfig.bio)}</p></div>
+      <div class="font-mono text-sm"><p class="mb-1 text-[11px] tracking-[.04em] text-[oklch(0.51_0.018_255)] uppercase">{labels.social}</p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></div>
     </div>
   </Section>
 
-  <Section id="projects" title={labels.projects}>
-    <div class="grid gap-6 md:grid-cols-2">
+  <Section id="projects" title={labels.projects} index="02">
+    <div class="grid gap-4 md:grid-cols-12" data-reveal>
       {
         sortByOrder(projects).map((project) => (
-          <article class="rounded border p-5">
-            <h3 class="text-lg font-medium">{localized(project.data.title)}</h3>
-            <p class="mt-2 leading-7 text-slate-700">{localized(project.data.description)}</p>
-            <ul class="mt-3 flex flex-wrap gap-2" aria-label={labels.technologies}>
+          <article class="flex min-h-72 flex-col rounded-xl border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_oklch(0.2_0.02_255_/_0.07)] md:col-span-4 md:first:col-span-8 md:nth-4:col-span-8">
+            <p class="font-mono text-[11px] tracking-[.06em] text-[oklch(0.51_0.018_255)] uppercase">{String(project.data.order).padStart(2, '0')} / Project</p>
+            <h3 class="mt-auto pt-8 text-xl font-semibold">{localized(project.data.title)}</h3>
+            <p class="mt-2 text-sm leading-6 text-[oklch(0.51_0.018_255)]">{localized(project.data.description)}</p>
+            <ul class="mt-5 flex flex-wrap gap-2" aria-label={labels.technologies}>
               {project.data.technologies.map((technology) => (
-                <li class="text-sm text-slate-600">{technology}</li>
+                <li class="rounded border border-[oklch(0.87_0.012_255)] px-2 py-1 font-mono text-[10px] text-[oklch(0.51_0.018_255)]">{technology}</li>
               ))}
             </ul>
-            <div class="mt-4 flex gap-4 text-sm">
+            <div class="mt-5 flex gap-4 font-mono text-xs">
               {project.data.url && (
                 <a class="underline" href={project.data.url}>
                   {labels.liveProject}
@@ -80,11 +77,11 @@ const description = localized(siteConfig.bio);
     </div>
   </Section>
 
-  <Section id="experiences" title={labels.experiences}>
-    <div class="space-y-6">
+  <Section id="experiences" title={labels.experiences} index="03">
+    <div class="max-w-[830px] space-y-0" data-reveal>
       {
         sortByOrder(experiences).map((experience) => (
-          <article>
+          <article class="border-b border-[oklch(0.87_0.012_255)] py-7">
             <h3 class="text-lg font-medium">
               {localized(experience.data.role)} · {experience.data.company}
             </h3>
@@ -98,11 +95,11 @@ const description = localized(siteConfig.bio);
     </div>
   </Section>
 
-  <Section id="educations" title={labels.educations}>
-    <div class="space-y-6">
+  <Section id="educations" title={labels.educations} index="04">
+    <div class="grid gap-5 md:grid-cols-2" data-reveal>
       {
         sortByOrder(educations).map((education) => (
-          <article>
+          <article class="border-t border-[oklch(0.87_0.012_255)] py-5">
             <h3 class="text-lg font-medium">{localized(education.data.degree)}</h3>
             <p>{education.data.institution}</p>
             <p class="text-sm text-slate-600">
@@ -115,11 +112,11 @@ const description = localized(siteConfig.bio);
     </div>
   </Section>
 
-  <Section id="certificates" title={labels.certificates}>
-    <div class="grid gap-6 md:grid-cols-2">
+  <Section id="certificates" title={labels.certificates} index="05">
+    <div class="grid gap-0 border-t border-[oklch(0.87_0.012_255)]" data-reveal>
       {
         sortByOrder(certificates).map((certificate) => (
-          <article class="rounded border p-5">
+          <article class="border-b border-[oklch(0.87_0.012_255)] py-5">
             <h3 class="text-lg font-medium">{localized(certificate.data.name)}</h3>
             <p>{certificate.data.issuer}</p>
             <p class="text-sm text-slate-600">{certificate.data.date}</p>
@@ -134,11 +131,11 @@ const description = localized(siteConfig.bio);
     </div>
   </Section>
 
-  <Section id="skills" title={labels.skills}>
-    <ul class="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+  <Section id="skills" title={labels.skills} index="06">
+    <ul class="grid gap-4 sm:grid-cols-2 md:grid-cols-3" data-reveal>
       {
         siteConfig.skills.map((skill) => (
-          <li class="rounded border p-4">
+          <li class="rounded-xl border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5">
             <>
               <span class="font-medium">{skill.name}</span>
               <span class="mt-1 block text-sm text-slate-600">{localized(skill.category)}</span>
@@ -149,11 +146,11 @@ const description = localized(siteConfig.bio);
     </ul>
   </Section>
 
-  <Section id="languages" title={labels.languages}>
-    <ul class="grid gap-3 sm:grid-cols-2">
+  <Section id="languages" title={labels.languages} index="07">
+    <ul class="grid gap-4 sm:grid-cols-2 md:grid-cols-3" data-reveal>
       {
         siteConfig.languages.map((language) => (
-          <li class="rounded border p-4">
+          <li class="rounded-xl border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5">
             <>
               <span class="font-medium">{localized(language.name)}</span>
               <span class="mt-1 block text-sm text-slate-600">{localized(language.level)}</span>

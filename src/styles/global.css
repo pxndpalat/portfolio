@@ -1,9 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 :root {
-  font-family: system-ui, sans-serif;
-  color: #1f2937;
-  background: #ffffff;
+  font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  color: oklch(0.205 0.012 255);
+  background: oklch(0.975 0.004 250);
 }
 
 html {
@@ -12,9 +13,57 @@ html {
 
 body {
   margin: 0;
+  min-width: 320px;
+  background: oklch(0.975 0.004 250);
 }
 
 :focus-visible {
-  outline: 3px solid #2563eb;
+  outline: 3px solid oklch(0.55 0.17 250);
   outline-offset: 3px;
+}
+
+[data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 550ms ease, transform 550ms ease; }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+
+aside[data-reveal] > p:first-child {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 0;
+}
+
+aside[data-reveal] > p:first-child::before {
+  width: 38px;
+  height: 8px;
+  content: '';
+  background:
+    radial-gradient(circle, #ff5f57 0 4px, transparent 4.5px) left / 8px 8px no-repeat,
+    radial-gradient(circle, #febc2e 0 4px, transparent 4.5px) center / 8px 8px no-repeat,
+    radial-gradient(circle, #28c840 0 4px, transparent 4.5px) right / 8px 8px no-repeat;
+}
+
+aside[data-reveal] > p:first-child::after {
+  color: oklch(0.51 0.018 255);
+  font-size: 10px;
+  letter-spacing: .08em;
+  content: 'profile.json';
+}
+
+aside[data-reveal] > p:last-child::after {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -2px;
+  content: '';
+  background: currentColor;
+  animation: terminal-blink 1s steps(2) infinite;
+}
+
+@keyframes terminal-blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  [data-reveal] { opacity: 1; transform: none; }
 }
