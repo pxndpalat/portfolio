@@ -1,4 +1,5 @@
 import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const localizedText = z.object({
@@ -7,7 +8,7 @@ const localizedText = z.object({
 });
 
 const projects = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/projects' }),
   schema: z.object({
     order: z.number(),
     title: localizedText,
@@ -19,7 +20,7 @@ const projects = defineCollection({
 });
 
 const experiences = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/experiences' }),
   schema: z.object({
     order: z.number(),
     role: localizedText,
@@ -31,11 +32,11 @@ const experiences = defineCollection({
 });
 
 const educations = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/educations' }),
   schema: z.object({
     order: z.number(),
     degree: localizedText,
-    institution: z.string(),
+    institution: localizedText,
     start: z.string(),
     end: z.string(),
     summary: localizedText,
@@ -43,7 +44,7 @@ const educations = defineCollection({
 });
 
 const certificates = defineCollection({
-  type: 'data',
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/certificates' }),
   schema: z.object({
     order: z.number(),
     name: localizedText,

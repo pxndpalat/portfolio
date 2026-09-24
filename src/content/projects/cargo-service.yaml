@@ -1,0 +1,12 @@
+order: 1
+title:
+  en: Cargo Service
+  th: Cargo Service
+description:
+  en: Designed the system based on requirements and developed a web application for creating orders and allowing customers to track shipment status.
+  th: ออกแบบระบบตามความต้องการและพัฒนาเว็บแอปสำหรับสร้างคำสั่งซื้อ ให้ลูกค้าติดตามสถานะสินค้าได้
+technologies:
+  - React
+  - Vite
+  - .NET
+  - MySQL

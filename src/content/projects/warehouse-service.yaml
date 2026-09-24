@@ -1,0 +1,10 @@
+order: 2
+title:
+  en: Warehouse Service
+  th: Warehouse Service
+description:
+  en: Designed the system based on requirements and developed a warehouse inventory management system.
+  th: ออกแบบระบบตามความต้องการและพัฒนาระบบจัดการสต็อกสินค้าในโกดัง
+technologies:
+  - .NET Razor
+  - MySQL

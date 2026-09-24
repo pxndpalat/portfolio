@@ -1,0 +1,11 @@
+order: 3
+title:
+  en: AI Marketing Service
+  th: AI Marketing Service
+description:
+  en: Primarily developed the frontend of a service that continuously generates social media content and publishes it to social platforms.
+  th: พัฒนาส่วนหน้าบ้านเป็นหลักสำหรับระบบที่ช่วยสร้างคอนเทนต์โซเชียลมีเดียอย่างต่อเนื่องและเผยแพร่ไปยังแพลตฟอร์มโซเชียล
+technologies:
+  - Next.js
+  - .NET
+  - MySQL

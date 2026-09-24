@@ -3,10 +3,11 @@ import { sectionLabels, type Locale } from '../data/site';
 
 interface Props {
   locale: Locale;
-  name: string;
+  name: { en: string; th: string };
 }
 
-const { locale, name } = Astro.props;
+const { locale, name: localizedName } = Astro.props;
+const name = localizedName[locale];
 const labels = sectionLabels[locale];
 const otherLocale: Locale = locale === 'en' ? 'th' : 'en';
 const baseUrl = `${import.meta.env.BASE_URL}/`;

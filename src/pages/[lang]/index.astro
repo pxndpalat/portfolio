@@ -21,28 +21,77 @@ const sortByOrder = <T extends { data: { order: number } }>(items: T[]) =>
   items.toSorted((a, b) => a.data.order - b.data.order);
 
 const localized = (value: { en: string; th: string }) => value[locale];
-const title = `${siteConfig.name} — ${localized(siteConfig.role)}`;
+const title = `${siteConfig.name[locale]} — ${localized(siteConfig.role)}`;
 const description = localized(siteConfig.bio);
 ---
 
 <BaseLayout {locale} {title} {description}>
-  <section class="overflow-hidden px-5 py-22 sm:px-7 sm:py-36">
+  <section class="overflow-hidden px-5 py-22 sm:px-7 sm:py-28">
     <div class="mx-auto grid max-w-[1180px] items-end gap-12 lg:grid-cols-[1.25fr_.75fr] lg:gap-28">
       <div data-reveal>
-        <p class="mb-5 font-mono text-xs font-medium tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase"><span class="mr-2 inline-block size-2 rounded-full bg-[oklch(0.48_0.11_150)]"></span>{localized(siteConfig.role)}</p>
-        <h1 class="max-w-[12ch] text-5xl leading-[.98] font-semibold tracking-[-.03em] sm:text-7xl lg:text-8xl">{siteConfig.name}.</h1>
-        <p class="mt-6 max-w-[56ch] text-base text-[oklch(0.51_0.018_255)] sm:text-lg">{localized(siteConfig.bio)}</p>
-        <div class="mt-9 flex flex-wrap gap-3"><a class="rounded-lg border border-[oklch(0.55_0.17_250)] bg-[oklch(0.55_0.17_250)] px-4 py-3 text-sm font-medium text-white no-underline" href="#projects">{labels.projects}</a><a class="rounded-lg border border-current px-4 py-3 text-sm font-medium no-underline" href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></div>
-        <div class="mt-7 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[oklch(0.51_0.018_255)]">{siteConfig.social.map((link) => <a href={link.url} rel="me">{link.label} ↗</a>)}</div>
+        <p
+          class="mb-5 font-mono text-xs font-medium tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase"
+        >
+          <span class="mr-2 inline-block size-2 rounded-full bg-[oklch(0.48_0.11_150)]"></span>{
+            localized(siteConfig.role)
+          }
+        </p>
+        <h1
+          class="max-w-[12ch] text-5xl leading-[.98] font-semibold tracking-[-.03em] sm:text-7xl lg:text-8xl"
+        >
+          {siteConfig.name[locale]}.
+        </h1>
+        <p class="mt-6 max-w-[56ch] text-base text-[oklch(0.51_0.018_255)] sm:text-lg">
+          {localized(siteConfig.bio)}
+        </p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a
+            class="rounded-lg border border-[oklch(0.55_0.17_250)] bg-[oklch(0.55_0.17_250)] px-4 py-3 text-sm font-medium text-white no-underline"
+            href="#projects">{labels.projects}</a
+          ><a
+            class="rounded-lg border border-current px-4 py-3 text-sm font-medium no-underline"
+            href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a
+          >
+        </div>
+        <div
+          class="mt-7 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs text-[oklch(0.51_0.018_255)]"
+        >
+          {
+            siteConfig.social.map((link) => (
+              <a href={link.url} rel="me">
+                {link.label} ↗
+              </a>
+            ))
+          }
+        </div>
       </div>
-      <aside class="rounded-[20px] border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5 font-mono text-xs leading-7 shadow-[0_18px_40px_oklch(0.2_0.02_255_/_0.07)]" data-reveal><p class="mb-5 text-[10px] tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase">● ● ● profile.json</p><p class="text-[oklch(0.51_0.018_255)]">{'{'}</p><p class="pl-4">"role": "{localized(siteConfig.role)}",</p><p class="pl-4">"focus": "portfolio",</p><p class="pl-4">"availability": "open"</p><p class="text-[oklch(0.51_0.018_255)]">{'}'}</p></aside>
+      <aside
+        class="self-center rounded-[20px] border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5 font-mono text-xs leading-7 shadow-[0_18px_40px_oklch(0.2_0.02_255_/_0.07)]"
+        data-reveal
+      >
+        <p class="mb-5 text-[10px] tracking-[.08em] text-[oklch(0.51_0.018_255)] uppercase">
+          ● ● ● profile.json
+        </p><p class="text-[oklch(0.51_0.018_255)]">{'{'}</p><p class="pl-4">
+          "role": "{localized(siteConfig.role)}",
+        </p><p class="pl-4">"focus": "portfolio",</p><p class="pl-4">"availability": "open"</p><p
+          class="text-[oklch(0.51_0.018_255)]"
+        >
+          {'}'}
+        </p>
+      </aside>
     </div>
   </section>
 
   <Section id="about" title={labels.about} index="01">
     <div class="grid gap-10 lg:grid-cols-[1.4fr_.6fr]" data-reveal>
-      <div><p class="max-w-[53ch] text-lg leading-relaxed sm:text-xl">{localized(siteConfig.bio)}</p></div>
-      <div class="font-mono text-sm"><p class="mb-1 text-[11px] tracking-[.04em] text-[oklch(0.51_0.018_255)] uppercase">{labels.social}</p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></div>
+      <div>
+        <p class="max-w-[53ch] text-lg leading-relaxed sm:text-xl">{localized(siteConfig.bio)}</p>
+      </div>
+      <div class="font-mono text-sm">
+        <p class="mb-1 text-[11px] tracking-[.04em] text-[oklch(0.51_0.018_255)] uppercase">
+          {labels.social}
+        </p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+      </div>
     </div>
   </Section>
 
@@ -51,12 +100,18 @@ const description = localized(siteConfig.bio);
       {
         sortByOrder(projects).map((project) => (
           <article class="flex min-h-72 flex-col rounded-xl border border-[oklch(0.87_0.012_255)] bg-[oklch(0.995_0.002_250)] p-5 transition hover:-translate-y-1 hover:shadow-[0_18px_40px_oklch(0.2_0.02_255_/_0.07)] md:col-span-4 md:first:col-span-8 md:nth-4:col-span-8">
-            <p class="font-mono text-[11px] tracking-[.06em] text-[oklch(0.51_0.018_255)] uppercase">{String(project.data.order).padStart(2, '0')} / Project</p>
+            <p class="font-mono text-[11px] tracking-[.06em] text-[oklch(0.51_0.018_255)] uppercase">
+              {String(project.data.order).padStart(2, '0')} / Project
+            </p>
             <h3 class="mt-auto pt-8 text-xl font-semibold">{localized(project.data.title)}</h3>
-            <p class="mt-2 text-sm leading-6 text-[oklch(0.51_0.018_255)]">{localized(project.data.description)}</p>
+            <p class="mt-2 text-sm leading-6 text-[oklch(0.51_0.018_255)]">
+              {localized(project.data.description)}
+            </p>
             <ul class="mt-5 flex flex-wrap gap-2" aria-label={labels.technologies}>
               {project.data.technologies.map((technology) => (
-                <li class="rounded border border-[oklch(0.87_0.012_255)] px-2 py-1 font-mono text-[10px] text-[oklch(0.51_0.018_255)]">{technology}</li>
+                <li class="rounded border border-[oklch(0.87_0.012_255)] px-2 py-1 font-mono text-[10px] text-[oklch(0.51_0.018_255)]">
+                  {technology}
+                </li>
               ))}
             </ul>
             <div class="mt-5 flex gap-4 font-mono text-xs">
@@ -101,7 +156,7 @@ const description = localized(siteConfig.bio);
         sortByOrder(educations).map((education) => (
           <article class="border-t border-[oklch(0.87_0.012_255)] py-5">
             <h3 class="text-lg font-medium">{localized(education.data.degree)}</h3>
-            <p>{education.data.institution}</p>
+            <p>{localized(education.data.institution)}</p>
             <p class="text-sm text-slate-600">
               {education.data.start} — {education.data.end}
             </p>
